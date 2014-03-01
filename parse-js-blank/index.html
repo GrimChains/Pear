@@ -14,7 +14,7 @@
 <body>
   
   <div id="main">
-    <h1>You're ready to use Parse!</h1>
+    <h1>Example Code.</h1>
 
     <p>Read the documentation and start building your JavaScript app:</p>
 
@@ -39,9 +39,20 @@
   </div>
 
   <script type="text/javascript">
-    Parse.initialize("APPLICATION_ID", "JAVASCRIPT_KEY");
+    Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
     
-    var TestObject = Parse.Object.extend("TestObject");
+    var TestObject = Parse.Object.extend("TestRealsies");
+    var testObject = new TestObject();
+    testObject.set("Name", "Nick");
+    testObject.set("Food", "sushi");
+    testObject.set("Game", "BBall");
+    testObject.set("asdfljk", "asdfjhk");
+    testObject.save(null).then(function(object) {
+      alert("yay! it worked");
+    });
+
+
+    /*var TestObject = Parse.Object.extend("TestObject");
     var testObject = new TestObject();
       testObject.save({foo: "bar"}, {
       success: function(object) {
@@ -50,7 +61,7 @@
       error: function(model, error) {
         $(".error").show();
       }
-    });
+    });*/
   </script>
 </body>
 

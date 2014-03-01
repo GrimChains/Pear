@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "Pear": {
+            "applicationId": "mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", 
+            "masterKey": "sF17XTAD3i712XDpgTkM3REBDB2ghrNJgCIDZhHQ"
+        }, 
+        "_default": {
+            "link": "Pear"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.17"
+    }
+}
