@@ -101,7 +101,7 @@
    ref.parentNode.insertBefore(js, ref);
   }(document));
     function push(male_id, female_id) {
-      if (!pull(male_id, female_id)) { return; }
+      //if (!pull(male_id, female_id)) { return; }
       Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
       var ParseObject = Parse.Object.extend("Couples");
       var couple = new ParseObject;
@@ -111,32 +111,42 @@
       couple.set("Downvotes", 0);
       couple.save(null);
     }
-function pull(male_id, female_id) { //'gender = 1 --> male'
-      Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
-      var ParseObject = Parse.Object.extend("Couples");
-      var query = new Parse.Query(ParseObject);
-      query.equalTo("Male", male_id);
-      query.equalTo("Female", female_id);
-      return query.find({
-        error: function(error) {
-          alert("Error: " + error.code + " " + error.message);
-        }
-      });
-    }
 
 function like(male_id, female_id) {
-  var temp = pull(male_id, female_id);
-  (temp[0]).increment("Upvotes");
+  Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
+  var ParseObject = Parse.Object.extend("Couples");
+  var query = new Parse.Query(ParseObject);
+  query.equalTo("Male", String(male_id));
+  query.equalTo("Female", String(female_id));
+  query.find({
+    success: function(result) {
+      (result[0]).increment("Upvotes");
+      (result[0]).save(null);
+    },
+    error: function(error) {
+      alert("oopsies");
+      alert("Error: " + error.code + " " + error.message);
+    }
+  });
   
 }
 
 function dislike(male_id, female_id) {
-  var temp = pull(male_id, female_id);
-  console.log(pull(male_id,female_id));
-  console.log(male_id);
-  console.log(female_id);
-  console.log(temp.Karma);
-  temp[0].increment("Downvotes");
+  Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
+  var ParseObject = Parse.Object.extend("Couples");
+  var query = new Parse.Query(ParseObject);
+  query.equalTo("Male", String(male_id));
+  query.equalTo("Female", String(female_id));
+  query.find({
+    success: function(result) {
+      (result[0]).increment("Downvotes");
+      (result[0]).save(null);
+    },
+    error: function(error) {
+      alert("oopsies");
+      alert("Error: " + error.code + " " + error.message);
+    }
+  });
 }
 
 function arrayofFriends()
@@ -186,18 +196,21 @@ function arrayofFriends()
                 </h1>
             </div>
         </div>
-  <div class="letsalign">
+  <div class="letsalign inner cover heading">
         <div class="row">
             <div class="col-lg-6 col-md-6 portfolio-item">
-                    <img id = "random pic" class="img-responsive" src = "" width = "400" height = "400"> 
+                    <img id = "random pic" class="img-responsive" src = "" width = "400" height = "400" hspace="20"> 
             <p class="lead">
-              <a href="#" class="btn-custom" id = "like_button" onclick = "like()">YES</a>
+              <p> </p>
+              <a href="#" class="btn btn-success btn-lg" id = "like_button" onclick = "like()">YES</a>
+               
             </p>         
             </div>
             <div class="col-lg-6 col-md-6 portfolio-item">         
-                    <img id = "random pic 1" class="img-responsive" src ="" width = "400" height = "400">
+                    <img id = "random pic 1" class="img-responsive" src ="" width = "400" height = "400" hspace="20">
               <p class="lead">
-                <a href="#" class="btn btn-lg btn-default" id = "dislike_button" onclick = "dislike()">NO</a>
+                <p> </p>
+                <a href="#" class="btn btn-danger btn-lg" id = "dislike_button" onclick = "dislike()">NO</a>
             </p>     
             </div>
         </div>
