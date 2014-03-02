@@ -122,12 +122,14 @@ function like(male_id, female_id) {
     success: function(result) {
       (result[0]).increment("Upvotes");
       (result[0]).save(null);
+     // checktoContact(result);
     },
     error: function(error) {
       alert("oopsies");
       alert("Error: " + error.code + " " + error.message);
     }
   });
+
   arrayofFriends();
 }
 
@@ -141,6 +143,7 @@ function dislike(male_id, female_id) {
     success: function(result) {
       (result[0]).increment("Downvotes");
       (result[0]).save(null);
+      //checktoContact(result);
     },
     error: function(error) {
       alert("oopsies");
@@ -149,7 +152,27 @@ function dislike(male_id, female_id) {
   });
   arrayofFriends();
 }
+/**
 
+function checktoContact(result) {
+  var total = parseInt(result[0].Downvotes) + parseInt(result[0].Upvotes);
+  var ratio = parseInt(result[0].Upvotes)/total;
+  if (ratio >= 0.7)
+  {
+    contactCouple(result[0].Male,result[0].Female);
+  }
+}
+**/
+/**
+function contactCouple(male_id,female_id)
+{
+  FB.ui{
+    method:'send',
+    to: parseInt(male_id), parseInt(female_id);
+  }
+  }
+}
+**/
 function arrayofFriends()
 {
   var response 
@@ -216,14 +239,15 @@ function arrayofFriends()
             </div>
         </div>
       </div>
+      <div class="row text-center">
+                <a href="#" class="btn btn btn-lg" onClick="contactCouple()>Contact the couple</a>
+      </div>
 
  </div>
     </div>
             </div>
       </div>
     </div>
-
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
