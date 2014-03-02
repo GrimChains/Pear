@@ -102,6 +102,9 @@ function arrayofFriends()
         var img = document.createElement("img");
         img.src = "http://graph.facebook.com/"+ response.data[parseInt(random)].id +"/picture?width=400&height=400";
         document.getElementById("random pic").setAttribute("src", img.src);
+        while (response.data[parseInt(random)].gender == response.data[parseInt(random1)].gender) {
+          random1 = Math.random() * response.data.length;
+        }
         img.src = "http://graph.facebook.com/"+ response.data[parseInt(random1)].id +"/picture?width=400&height=400";
         document.getElementById("random pic 1").setAttribute("src", img.src);
       });
