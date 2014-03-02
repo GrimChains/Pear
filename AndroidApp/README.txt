@@ -1,0 +1,1 @@
+Download Pear.apk onto mobile phone and install it to test it out. 
