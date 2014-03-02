@@ -39,29 +39,44 @@
   </div>
 
   <script type="text/javascript">
-    Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
-    
-    var TestObject = Parse.Object.extend("TestRealsies");
-    var testObject = new TestObject();
-    testObject.set("Name", "Nick");
-    testObject.set("Food", "sushi");
-    testObject.set("Game", "BBall");
-    testObject.set("asdfljk", "asdfjhk");
-    testObject.save(null).then(function(object) {
-      alert("yay! it worked");
-    });
 
+    function push(user_id, male_id, female_id) {
+      Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
+      var ParseObject = Parse.Object.extend("Couples");
+      var couple = new ParseObject;
+      couple.set("User", user_id);
+      couple.set("Male", male_id);
+      couple.set("Female", female_id)
+      couple.save(null);
+    }
 
-    /*var TestObject = Parse.Object.extend("TestObject");
-    var testObject = new TestObject();
-      testObject.save({foo: "bar"}, {
-      success: function(object) {
-        $(".success").show();
-      },
-      error: function(model, error) {
-        $(".error").show();
+    function pull(id, gender) { //'gender = 1 --> male'
+      Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
+      var ParseObject = Parse.Object.extend("Couples");
+      var query = new Parse.Query(ParseObject);
+      if (gender == 1) {
+        query.equalTo("Male", id);
       }
-    });*/
+      else {
+        query.equalTo("Female", id);
+      }
+      return query.find({
+        error: function(error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+      });
+    }
+
+
+    push("a", "b", "1");
+    push("a", "b", "2");
+    push("a", "b", "3");
+    push("a", "10", "c");
+    push("a", "20", "c");
+    push("a", "30", "c");
+    pull("b", 1);
+    pull("c", 0);
+
   </script>
 </body>
 
