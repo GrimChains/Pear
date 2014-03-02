@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-    <title>PEAR</title>
+    <title>Pear | Rate couples!</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -29,11 +29,17 @@
 
   <body>
   <script type="text/javascript">
-function friendsListGen(){
-  FB.api('me/friends', 
-    {fields:'id, name, gender'}
-    function(result))
+function friends(){
+  return FB.api('me/friends', 
+    {fields:'id, name, gender'})
+    
 }
+
+function arrayofFriends()
+{
+  list = friends();
+  alert(list[0].name);
+} 
   </script>
    
 
@@ -45,15 +51,16 @@ function friendsListGen(){
 
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">PEAR</h3>
-              <h4 class="masthead-brand">PEAR YOUR FRIENDS</h4>
+              <h3 class="masthead-brand">Pear</h3>
+              <h4 class="masthead-brand">Pear your friends!</h4>
               <ul class="nav masthead-nav">
                 <li class="active"><a href="#">Home</a></li>
                 <li><a href="#">FAQ</a></li>
                 <li><a href="#">Contact</a></li>
               </ul>
             </div>
-          </div>
+
+            <div class="inner"> </div>
         </div>
 
       </div>
