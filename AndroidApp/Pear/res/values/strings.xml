@@ -6,5 +6,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_splash">Splash</string>
     <string name="app_id">230101540515194</string>
+    <string name="desc">desc</string>
 
 </resources>
