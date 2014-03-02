@@ -8,7 +8,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
-
     <title>Pear</title>
 
     <!-- Bootstrap core CSS -->
@@ -101,7 +100,6 @@
    ref.parentNode.insertBefore(js, ref);
   }(document));
     function push(male_id, female_id) {
-      //if (!pull(male_id, female_id)) { return; }
       Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
       var ParseObject = Parse.Object.extend("Couples");
       var couple = new ParseObject;
@@ -111,6 +109,14 @@
       couple.set("Downvotes", 0);
       couple.save(null);
     }
+
+function getUpVotes(result){
+  return result[0]._serverData.Upvotes;
+}
+
+function getDownVotes(result){
+  return result[0]._serverData.Downvotes;
+}
 
 function like(male_id, female_id) {
   Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
@@ -122,14 +128,15 @@ function like(male_id, female_id) {
     success: function(result) {
       (result[0]).increment("Upvotes");
       (result[0]).save(null);
-     // checktoContact(result);
+      var ratio = getRatio(result);
+      console.log(ratio);
+      document.getElementById("perc").innerHTML=String(parseInt(ratio*100)) + '%';
     },
     error: function(error) {
       alert("oopsies");
       alert("Error: " + error.code + " " + error.message);
     }
   });
-
   arrayofFriends();
 }
 
@@ -143,7 +150,9 @@ function dislike(male_id, female_id) {
     success: function(result) {
       (result[0]).increment("Downvotes");
       (result[0]).save(null);
-      //checktoContact(result);
+      var ratio = getRatio(result);
+      console.log(ratio);
+      document.getElementById("perc").innerHTML=String(parseInt(ratio*100)) + '%';
     },
     error: function(error) {
       alert("oopsies");
@@ -152,7 +161,18 @@ function dislike(male_id, female_id) {
   });
   arrayofFriends();
 }
-/**
+
+
+function getRatio(result) {
+  var total = parseInt(result[0]._serverData.Downvotes) + parseInt(result[0]._serverData.Upvotes);
+  if (total == 0) {
+    ratio = 0;
+  }
+  else {
+    var ratio = parseInt(result[0]._serverData.Upvotes)/total;
+  }
+  return ratio;
+}
 
 function checktoContact(result) {
   var total = parseInt(result[0].Downvotes) + parseInt(result[0].Upvotes);
@@ -162,17 +182,7 @@ function checktoContact(result) {
     contactCouple(result[0].Male,result[0].Female);
   }
 }
-**/
-/**
-function contactCouple(male_id,female_id)
-{
-  FB.ui{
-    method:'send',
-    to: parseInt(male_id), parseInt(female_id);
-  }
-  }
-}
-**/
+
 function arrayofFriends()
 {
   var response 
@@ -239,10 +249,9 @@ function arrayofFriends()
             </div>
         </div>
       </div>
-      <div class="row text-center">
-                <a href="#" class="btn btn btn-lg" onClick="contactCouple()>Contact the couple</a>
+            <div class="row text-center">
+                <p id="perc">N/A</a>
       </div>
-
  </div>
     </div>
             </div>
