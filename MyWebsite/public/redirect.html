@@ -26,11 +26,23 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-      .letsalign {
-        margin-right: 25%;
-      }
+    btn-custom {
+  background-color: hsl(86, 79%, 56%) !important;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#bff07f", endColorstr="#9ae736");
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#bff07f), to(#9ae736));
+  background-image: -moz-linear-gradient(top, #bff07f, #9ae736);
+  background-image: -ms-linear-gradient(top, #bff07f, #9ae736);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bff07f), color-stop(100%, #9ae736));
+  background-image: -webkit-linear-gradient(top, #bff07f, #9ae736);
+  background-image: -o-linear-gradient(top, #bff07f, #9ae736);
+  background-image: linear-gradient(#bff07f, #9ae736);
+  border-color: #9ae736 #9ae736 hsl(86, 79%, 52%);
+  color: #333 !important;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.26);
+  -webkit-font-smoothing: antialiased;
+}
 
-      }
     </style>
   </head>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -88,15 +100,45 @@
    js.src = "connect_facebook.js";
    ref.parentNode.insertBefore(js, ref);
   }(document));
-    function push(user_id, male_id, female_id) {
+    function push(male_id, female_id) {
+      if (!pull(male_id, female_id)) { return; }
       Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
       var ParseObject = Parse.Object.extend("Couples");
       var couple = new ParseObject;
-      couple.set("User", user_id);
       couple.set("Male", male_id);
-      couple.set("Female", female_id)
+      couple.set("Female", female_id);
+      couple.set("Upvotes", 0);
+      couple.set("Downvotes", 0);
       couple.save(null);
     }
+function pull(male_id, female_id) { //'gender = 1 --> male'
+      Parse.initialize("mL0EJQ6zzsTmbzzOfke3ZTlNBskJiKbmm7GwRDP5", "9fIYuboNAt769ouAZa3CTfvJJJ3s7XUCp0S7ZjiU");
+      var ParseObject = Parse.Object.extend("Couples");
+      var query = new Parse.Query(ParseObject);
+      query.equalTo("Male", male_id);
+      query.equalTo("Female", female_id);
+      return query.find({
+        error: function(error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+      });
+    }
+
+function like(male_id, female_id) {
+  var temp = pull(male_id, female_id);
+  (temp[0]).increment("Upvotes");
+  
+}
+
+function dislike(male_id, female_id) {
+  var temp = pull(male_id, female_id);
+  console.log(pull(male_id,female_id));
+  console.log(male_id);
+  console.log(female_id);
+  console.log(temp.Karma);
+  temp[0].increment("Downvotes");
+}
+
 function arrayofFriends()
 {
   var response 
@@ -105,15 +147,20 @@ function arrayofFriends()
       var random = Math.random() * response.data.length;
       var random1 = Math.random() * response.data.length;
       FB.api("/me", function(resp) {
-        push(resp.id, response.data[parseInt(random)].id, response.data[parseInt(random1)].id);
+        while (response.data[parseInt(random)].gender == "Female") {
+          random = Math.random() * response.data.length;
+        }
         var img = document.createElement("img");
-        img.src = "http://graph.facebook.com/"+ response.data[parseInt(random)].id +"/picture?width=400&height=400";
+        img.src = "http://graph.facebook.com/"+ response.data[parseInt(random)].id +"/picture?width=9999&height=9999";
         document.getElementById("random pic").setAttribute("src", img.src);
         while (response.data[parseInt(random)].gender == response.data[parseInt(random1)].gender) {
           random1 = Math.random() * response.data.length;
         }
-        img.src = "http://graph.facebook.com/"+ response.data[parseInt(random1)].id +"/picture?width=400&height=400";
+        img.src = "http://graph.facebook.com/"+ response.data[parseInt(random1)].id +"/picture?width=9999&height=9999";
         document.getElementById("random pic 1").setAttribute("src", img.src);
+        push(response.data[parseInt(random)].id, response.data[parseInt(random1)].id)
+        document.getElementById("like_button").setAttribute("onclick", "like(" + response.data[parseInt(random)].id + "," + response.data[parseInt(random1)].id + ");");
+        document.getElementById("dislike_button").setAttribute("onclick", "dislike(" + response.data[parseInt(random)].id + "," + response.data[parseInt(random1)].id + ");");
       });
     });
 } 
@@ -130,7 +177,9 @@ function arrayofFriends()
                 <li><a href="#">Contact</a></li>
               </ul>
             </div>
-    <div class="container">
+
+    <div class ="inner cover">
+    <div class="cover heading">
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">  Pear | Pear your friends!
@@ -140,14 +189,21 @@ function arrayofFriends()
   <div class="letsalign">
         <div class="row">
             <div class="col-lg-6 col-md-6 portfolio-item">
-                    <img id = "random pic" class="img-responsive" src = "">          
+                    <img id = "random pic" class="img-responsive" src = "" width = "400" height = "400"> 
+            <p class="lead">
+              <a href="#" class="btn-custom" id = "like_button" onclick = "like()">YES</a>
+            </p>         
             </div>
             <div class="col-lg-6 col-md-6 portfolio-item">         
-                    <img id = "random pic 1" class="img-responsive" src ="">    
+                    <img id = "random pic 1" class="img-responsive" src ="" width = "400" height = "400">
+              <p class="lead">
+                <a href="#" class="btn btn-lg btn-default" id = "dislike_button" onclick = "dislike()">NO</a>
+            </p>     
             </div>
         </div>
       </div>
 
+ </div>
     </div>
             </div>
       </div>
