@@ -28,6 +28,13 @@
   </head>
 
   <body>
+  <script type="text/javascript">
+function friendsListGen(){
+  FB.api('me/friends', 
+    {fields:'id, name, gender'}
+    function(result))
+}
+  </script>
    
 
     <div class="site-wrapper">
@@ -39,7 +46,7 @@
           <div class="masthead clearfix">
             <div class="inner">
               <h3 class="masthead-brand">PEAR</h3>
-              <h3 class="masthead-brand">PEAR YOUR FRIENDS</h3>
+              <h4 class="masthead-brand">PEAR YOUR FRIENDS</h4>
               <ul class="nav masthead-nav">
                 <li class="active"><a href="#">Home</a></li>
                 <li><a href="#">FAQ</a></li>
