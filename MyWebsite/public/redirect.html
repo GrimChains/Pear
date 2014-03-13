@@ -190,21 +190,43 @@ function arrayofFriends()
     function(response) {
       var random = Math.random() * response.data.length;
       var random1 = Math.random() * response.data.length;
+      var males = new Array();
+      var females = new Array();
       FB.api("/me", function(resp) {
-        while (response.data[parseInt(random)].gender == "Female") {
+        for (var i = 0; i < response.data.length; i++) {
+          if (response.data[i].gender == "Female") {
+            males.push(response.data[i]);
+          }
+          else {
+            females.push(response.data[i])
+          }
+        }
+        while (1 == 1) {
+          random = Math.random() * males.length;
+          var img = document.createElement("img");
+          img.src = "http://graph.facebook.com/"+ males[parseInt(random)].id +"/picture?width=9999&height=9999";
+          document.getElementById("random pic").setAttribute("src", img.src);
+          random1 = Math.random() * females.length;
+          img.src = "http://graph.facebook.com/"+ females[parseInt(random1)].id +"/picture?width=9999&height=9999";
+          document.getElementById("random pic 1").setAttribute("src", img.src);
+          push(males[parseInt(random)].id, females[parseInt(random1)].id)
+          document.getElementById("like_button").setAttribute("onclick", "like(" + males[parseInt(random)].id + "," + females[parseInt(random1)].id + ");");
+          document.getElementById("dislike_button").setAttribute("onclick", "dislike(" + males[parseInt(random)].id + "," + females[parseInt(random1)].id + ");");
+        }
+        /*while (response.data[parseInt(random)].gender == "Female") {
           random = Math.random() * response.data.length;
         }
         var img = document.createElement("img");
         img.src = "http://graph.facebook.com/"+ response.data[parseInt(random)].id +"/picture?width=9999&height=9999";
-        document.getElementById("random pic").setAttribute("src", img.src);
-        while (response.data[parseInt(random)].gender == response.data[parseInt(random1)].gender) {
+        document.getElementById("random pic").setAttribute("src", img.src);*/
+        /*while (response.data[parseInt(random)].gender == response.data[parseInt(random1)].gender) {
           random1 = Math.random() * response.data.length;
         }
         img.src = "http://graph.facebook.com/"+ response.data[parseInt(random1)].id +"/picture?width=9999&height=9999";
-        document.getElementById("random pic 1").setAttribute("src", img.src);
-        push(response.data[parseInt(random)].id, response.data[parseInt(random1)].id)
-        document.getElementById("like_button").setAttribute("onclick", "like(" + response.data[parseInt(random)].id + "," + response.data[parseInt(random1)].id + ");");
-        document.getElementById("dislike_button").setAttribute("onclick", "dislike(" + response.data[parseInt(random)].id + "," + response.data[parseInt(random1)].id + ");");
+        document.getElementById("random pic 1").setAttribute("src", img.src);*/
+        /*push(males[parseInt(random)].id, females[parseInt(random1)].id)
+        document.getElementById("like_button").setAttribute("onclick", "like(" + males[parseInt(random)].id + "," + females[parseInt(random1)].id + ");");
+        document.getElementById("dislike_button").setAttribute("onclick", "dislike(" + males[parseInt(random)].id + "," + females[parseInt(random1)].id + ");");*/
       });
     });
 } 
